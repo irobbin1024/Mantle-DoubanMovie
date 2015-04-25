@@ -8,10 +8,11 @@
 
 #import "DBMovie.h"
 
+#pragma mark - DBMovie
 @implementation DBMovie
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
-    return @{ @"alt"            : @"",
+    return @{ @"alt"            : @"alt",
               @"altTitle"       : @"alt_title",
               @"movieID"        : @"id",
               @"imageURL"       : @"image",
@@ -64,16 +65,13 @@
 }
 
 + (NSValueTransformer *)ratingJSONTransformer {
+    __block NSError * e;
+    
     return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
-        NSArray * jsonArray = value;
-        NSMutableArray * ratingArray = [NSMutableArray array];
         
-        [jsonArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            DBMovieRating * ratingItem = [MTLJSONAdapter modelOfClass:[DBMovieRating class] fromJSONDictionary:obj error:nil];
-            [ratingArray addObject:ratingItem];
-        }];
+        DBMovieRating * ratingItem = [MTLJSONAdapter modelOfClass:[DBMovieRating class] fromJSONDictionary:value error:&e];
         
-        return ratingArray;
+        return ratingItem;
     }];
 }
 
@@ -88,6 +86,81 @@
         }];
         
         return tagsArray;
+    }];
+}
+
+@end
+
+#pragma mark DBMovieTag
+
+@implementation DBMovieTag
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{@"count" : @"count",
+             @"name"  : @"name"};
+}
+
+@end
+
+#pragma mark DBMovieRating
+
+@implementation DBMovieRating
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{
+             @"numRaters" : @"numRaters",
+             @"average" : @"average",
+             @"min" : @"min",
+             @"max" : @"max",
+             };
+}
+
+- (void)setNilValueForKey:(NSString *)key {
+    [self setValue:@0 forKey:key];
+}
+
+@end
+
+#pragma mark DBMovieAuthor
+
+@implementation DBMovieAuthor
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{@"name" : @"name"};
+}
+
+@end
+
+#pragma mark DBMovieAttrs
+
+@implementation DBMovieAttrs
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{
+             @"movieDuration" : @"movie_duration",
+             @"country" : @"country",
+             @"cast" : @"cast",
+             @"director" : @"director",
+             @"language" : @"language",
+             @"movieType" : @"movie_type",
+             @"pubdate" : @"pubdate",
+             @"title" : @"title",
+             @"website" : @"website",
+             @"writer" : @"writer",
+             @"year" : @"year",
+             };
+}
+
++ (NSValueTransformer *)JSONTransformer {
+    return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+        NSArray * jsonArray = value;
+        NSMutableArray * attrArray = [NSMutableArray array];
+        
+        [jsonArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [attrArray addObject:obj];
+        }];
+        
+        return attrArray;
     }];
 }
 

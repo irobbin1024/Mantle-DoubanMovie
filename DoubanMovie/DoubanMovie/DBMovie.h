@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Mantle.h"
+#import <UIKit/UIKit.h>
 
 
 
@@ -38,10 +39,10 @@
 // MovieRating
 @interface DBMovieRating: MTLModel<MTLJSONSerializing>
 
-@property (nonatomic, assign) float average;
-@property (nonatomic, assign) float max;
-@property (nonatomic, assign) float min;
-@property (nonatomic, assign) float numRaters;
+@property (nonatomic, strong) NSNumber * average;
+@property (nonatomic, assign) NSInteger max;
+@property (nonatomic, assign) NSInteger min;
+@property (nonatomic, assign) NSInteger numRaters;
 
 @end
 
@@ -69,7 +70,7 @@
 // ==== DBMovieAuthor
 @property (nonatomic, strong) NSArray * authors;
 // ==== MovieRating
-@property (nonatomic, strong) NSArray * rating;
+@property (nonatomic, strong) DBMovieRating * rating;
 // ==== MovieTag
 @property (nonatomic, strong) NSArray * tags;
 
