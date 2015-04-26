@@ -123,13 +123,13 @@
 	"title": "十二生肖"
 }
 
-```objc
+```
 
 这个JSON数据可以说是非常复杂的，考虑到了各种情况。数值部分有整数、浮点数、字符串。JSON里面还嵌套有多个Dictionary和Array。
 
 我们要转换的Model定义如下：
 
-```
+```objc
 // MovieAttrs
 @interface DBMovieAttrs: MTLModel<MTLJSONSerializing>
 
@@ -240,6 +240,7 @@ Mantle的核心类有3个：
 // ==== MovieTag
 @property (nonatomic, strong) NSArray * tags;
 ```
+
 2 写好Model字段同JSON字段的映射
 
 ```objc
